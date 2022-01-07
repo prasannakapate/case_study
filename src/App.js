@@ -1,24 +1,22 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import { Route, Routes } from 'react-router-dom';
+
+import { UserContext } from './config/userContext';
+
+const LoginPage = React.lazy(() => import('./components/LoginPage'));
+const ListingPage = React.lazy(() => import('./components/ListingPage'));
+const NoMatch = React.lazy(() => import('./components/common/NoMatch'));
 
 function App() {
+  const [user, setUser] = useState(null);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <UserContext.Provider value={{ user, setUser }}>
+      <Routes>
+        <Route index path="/" element={<LoginPage />} />
+        <Route path="/listing" element={<ListingPage />} />
+        <Route path="*" element={<NoMatch />} />
+      </Routes>
+    </UserContext.Provider>
   );
 }
 

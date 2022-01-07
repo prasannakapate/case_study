@@ -1,12 +1,21 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
+import React, { Suspense } from 'react';
+
 import App from './App';
+import ErrorBoundary from './components/common/ErrorBoundary';
+import Loader from './components/common/Loader';
+import ReactDOM from 'react-dom';
+import { BrowserRouter as Router } from 'react-router-dom';
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <ErrorBoundary>
+      <Suspense fallback={<Loader />}>
+        <Router>
+          <App />
+        </Router>
+      </Suspense>
+    </ErrorBoundary>
   </React.StrictMode>,
   document.getElementById('root')
 );
