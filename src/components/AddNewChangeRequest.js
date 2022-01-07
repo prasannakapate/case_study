@@ -10,7 +10,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
 import { UserContext } from '../config/userContext';
-import { getData } from '../services/changeRequests';
+import { getData } from '../services/fetchApi';
 
 export default function AddNewChangeRequest() {
   const [open, setOpen] = useState(false);
