@@ -8,14 +8,14 @@ import {
 } from '@mui/material';
 import { useEffect, useState } from 'react';
 
-import { API } from '../constants/constants';
-import AddNewChangeRequest from './AddNewChangeRequest';
-import BackDrop from './common/BackDrop';
+import { API } from '../../config/constants';
+import AddNewChangeRequest from '../addNewChangeRequest/AddNewChangeRequest';
+import BackDrop from '../common/BackDrop';
 import Box from '@mui/material/Box';
-import BoxItem from './common/BoxItem';
-import Header from './common/Header';
+import BoxItem from '../common/BoxItem';
+import Header from '../common/Header';
 import ListChangeRequests from './ListChangeRequests';
-import { getData } from '../services/fetchApi';
+import { getData } from '../../services/fetchApi';
 
 export default function ListingPage() {
   const [requestId, setRequestId] = useState('');

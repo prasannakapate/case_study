@@ -1,10 +1,10 @@
 import { AppBar, Link, Toolbar, Typography } from '@mui/material';
-import React, { useContext } from 'react';
 
-import { UserContext } from '../../config/userContext';
+import { selectUser } from '../../feature/userSlice';
+import { useSelector } from 'react-redux';
 
 export default function Header() {
-  const { user } = useContext(UserContext);
+  const user = useSelector(selectUser);
   return (
     <AppBar
       position="static"
@@ -14,7 +14,7 @@ export default function Header() {
     >
       <Toolbar sx={{ flexWrap: 'wrap' }}>
         <Typography variant="h6" color="inherit" noWrap sx={{ flexGrow: 1 }}>
-          Globex Network | Workflow Management | {user}
+          Globex Network | Workflow Management
         </Typography>
         <nav>
           <Link
@@ -23,7 +23,7 @@ export default function Header() {
             href="#"
             sx={{ my: 1, mx: 1.5 }}
           >
-            Support
+            {user?.name}
           </Link>
         </nav>
         <Link href="#" variant="outlined" sx={{ my: 1, mx: 1.5 }}>

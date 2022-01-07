@@ -5,23 +5,26 @@ import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import { UserContext } from '../config/userContext';
-import { useContext } from 'react';
+import { saveUser } from '../../feature/userSlice';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 const theme = createTheme();
 
 export default function Login() {
-  const { setUser } = useContext(UserContext);
+  const dispatch = useDispatch();
   let navigate = useNavigate();
 
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    const username = data.get('username');
+    const name = data.get('username');
     const password = data.get('password');
-    setUser(username);
-    console.log(username, password);
+
+    //TODO remove console
+    console.log(name, password);
+
+    dispatch(saveUser({ name }));
     navigate('/listing');
   };
 
@@ -50,6 +53,7 @@ export default function Login() {
               id="username"
               label="Username"
               name="username"
+              autoComplete="username"
               autoFocus
             />
             <TextField
@@ -60,6 +64,7 @@ export default function Login() {
               label="Password"
               type="password"
               id="password"
+              autoComplete="current-password"
             />
 
             <Button

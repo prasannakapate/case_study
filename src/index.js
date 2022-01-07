@@ -3,19 +3,23 @@ import React, { Suspense } from 'react';
 import App from './App';
 import ErrorBoundary from './components/common/ErrorBoundary';
 import Loader from './components/common/Loader';
+import { Provider } from 'react-redux';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
 import reportWebVitals from './reportWebVitals';
+import { store } from './redux/store';
 
 ReactDOM.render(
   <React.StrictMode>
-    <ErrorBoundary>
-      <Suspense fallback={<Loader />}>
-        <Router>
-          <App />
-        </Router>
-      </Suspense>
-    </ErrorBoundary>
+    <Provider store={store}>
+      <ErrorBoundary>
+        <Suspense fallback={<Loader />}>
+          <Router>
+            <App />
+          </Router>
+        </Suspense>
+      </ErrorBoundary>
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 );

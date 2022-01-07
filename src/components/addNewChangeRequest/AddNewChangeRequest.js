@@ -1,21 +1,26 @@
-import { Alert, Grid, InputLabel, Snackbar } from '@mui/material';
-import { useContext, useState } from 'react';
+import { Alert, InputLabel, Snackbar, TextareaAutosize } from '@mui/material';
 
-import { API } from '../constants/constants';
+import { API } from '../../config/constants';
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import { Box } from '@mui/system';
 import Button from '@mui/material/Button';
+import DatePicker from '@mui/lab/DatePicker';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import TextField from '@mui/material/TextField';
-import { UserContext } from '../config/userContext';
-import { getData } from '../services/fetchApi';
+import { getData } from '../../services/fetchApi';
+import { selectUser } from '../../feature/userSlice';
+import { useSelector } from 'react-redux';
+import { useState } from 'react';
 
-export default function AddNewChangeRequest() {
+export default function AddNewCR() {
   const [open, setOpen] = useState(false);
   const [showSnackbar, setShowSnackbar] = useState(false);
-  const { user } = useContext(UserContext);
+  const [date, setDate] = useState(new Date());
+  const user = useSelector(selectUser);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -29,8 +34,8 @@ export default function AddNewChangeRequest() {
     event.preventDefault();
     const userInput = new FormData(event.currentTarget);
     console.log({
-      requesterName: userInput.get('requesterName'),
-      requestedDate: userInput.get('requestedDate'),
+      requesterName: user?.name,
+      requestedDate: date,
       changeRequestType: userInput.get('changeRequestType'),
       changeRequestDescription: userInput.get('changeRequestDescription'),
     });
@@ -61,34 +66,32 @@ export default function AddNewChangeRequest() {
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
           <DialogTitle>Add a New Change Request</DialogTitle>
           <DialogContent>
-            <Grid container spacing={2} rowSpacing={3}>
-              <Grid item>
-                <InputLabel id="requester-name-label">
-                  Requester Name:
-                </InputLabel>
-                <TextField
-                  id="requester-name-input-id"
-                  name="requesterName"
-                  variant="outlined"
-                  size="small"
-                  value={user}
-                  fullWidth
-                  disabled
-                />
-              </Grid>
-            </Grid>
+            <InputLabel id="requester-name-label">Requester Name:</InputLabel>
+            <TextField
+              id="requester-name-input-id"
+              name="requesterName"
+              variant="outlined"
+              size="small"
+              value={user?.name}
+              style={{ width: '100%' }}
+              disabled
+            />
 
-            <Grid container spacing={2} rowSpacing={3}>
-              <Grid item>
-                <InputLabel id="request-id">Requested Date: </InputLabel>
-                <TextField
-                  id="request-id-input"
-                  name="requestedDate"
-                  variant="outlined"
-                  size="small"
-                />
-              </Grid>
-            </Grid>
+            <InputLabel id="request-id">Requested Date: </InputLabel>
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <DatePicker
+                disableFuture
+                name="requestedDate"
+                openTo="year"
+                views={['year', 'month', 'day']}
+                value={date}
+                onChange={(newValue) => {
+                  setDate(newValue);
+                }}
+                renderInput={(params) => <TextField {...params} />}
+                size="small"
+              />
+            </LocalizationProvider>
 
             <InputLabel id="request-id">Change Request Type: </InputLabel>
             <TextField
@@ -96,14 +99,16 @@ export default function AddNewChangeRequest() {
               name="changeRequestType"
               variant="outlined"
               size="small"
+              style={{ width: '100%' }}
             />
 
             <InputLabel id="request-id">Change Request Description:</InputLabel>
-            <TextField
+            <TextareaAutosize
+              aria-label="request-id"
+              minRows={6}
               id="request-id-input"
               name="changeRequestDescription"
-              variant="outlined"
-              size="small"
+              style={{ width: '100%' }}
             />
           </DialogContent>
           <DialogActions>
