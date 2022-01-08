@@ -21,17 +21,20 @@ export default function ListingPage() {
   const [requestId, setRequestId] = useState('');
   const [owner, setOwner] = useState('');
   const [data, setData] = useState([]);
+  const [filteredData, setFilteredData] = useState(data);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState();
 
   useEffect(() => {
+    setLoading(true);
     getData(API.FETCH_CHANGE_REQUESTS)
       .then((data) => {
         if (data && data.change_request.length > 0) {
-          let filteredData = data?.change_request.sort(
+          let newData = data?.change_request.sort(
             (a, b) => new Date(a.date_submitted) - new Date(b.date_submitted)
           );
-          setData(filteredData);
+          setData(newData);
+          setFilteredData(newData);
         }
       })
       .catch((e) => setError(e))
@@ -43,17 +46,17 @@ export default function ListingPage() {
   const clearFilters = () => {
     setRequestId('');
     setOwner('');
+    setFilteredData([...new Set([...data, ...filteredData])]);
   };
 
   const handleSerach = () => {
     if (requestId || owner) {
-      let filteredData = data?.filter((request) => {
-        return (
-          request.request_id === requestId ||
-          request.owner.toUpperCase() === owner.toUpperCase()
-        );
-      });
-      setData(filteredData);
+      let newData = filteredData?.filter(
+        (request) =>
+          request.request_id.includes(requestId) &&
+          request.owner.toUpperCase().includes(owner.toUpperCase())
+      );
+      setFilteredData(newData);
     }
   };
 
@@ -108,16 +111,18 @@ export default function ListingPage() {
             </Button>
           </BoxItem>
           <BoxItem sx={{ flexGrow: 1 }}>
-            <AddNewChangeRequest />
+            <AddNewChangeRequest
+              filteredData={filteredData}
+              setFilteredData={setFilteredData}
+              setData={setData}
+            />
           </BoxItem>
         </Box>
       </div>
 
-      {!loading && data.length > 0 ? (
-        <ListChangeRequests changeRequests={data} />
-      ) : (
-        <BackDrop />
-      )}
+      <ListChangeRequests changeRequests={filteredData} />
+
+      {loading && <BackDrop />}
     </Container>
   );
 }

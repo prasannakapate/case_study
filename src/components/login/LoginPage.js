@@ -19,10 +19,7 @@ export default function Login() {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const name = data.get('username');
-    const password = data.get('password');
-
-    //TODO remove console
-    console.log(name, password);
+    // const password = data.get('password');
 
     dispatch(saveUser({ name }));
     navigate('/listing');

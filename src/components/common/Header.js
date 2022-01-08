@@ -1,5 +1,6 @@
 import { AppBar, Link, Toolbar, Typography } from '@mui/material';
 
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { selectUser } from '../../feature/userSlice';
 import { useSelector } from 'react-redux';
 
@@ -16,16 +17,18 @@ export default function Header() {
         <Typography variant="h6" color="inherit" noWrap sx={{ flexGrow: 1 }}>
           Globex Network | Workflow Management
         </Typography>
-        <nav>
-          <Link
-            variant="button"
-            color="text.primary"
-            href="#"
-            sx={{ my: 1, mx: 1.5 }}
-          >
-            {user?.name}
-          </Link>
-        </nav>
+
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            flexWrap: 'wrap',
+          }}
+        >
+          <AccountCircleIcon />
+          <span>{user?.name}</span>
+        </div>
+
         <Link href="#" variant="outlined" sx={{ my: 1, mx: 1.5 }}>
           Help
         </Link>

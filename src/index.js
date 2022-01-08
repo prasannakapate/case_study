@@ -7,7 +7,15 @@ import { Provider } from 'react-redux';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
 import reportWebVitals from './reportWebVitals';
+import { saveState } from './helper/localStorage';
 import { store } from './redux/store';
+import throttle from 'lodash/throttle';
+
+store.subscribe(
+  throttle(() => {
+    saveState(store.getState());
+  }, 800)
+);
 
 ReactDOM.render(
   <React.StrictMode>

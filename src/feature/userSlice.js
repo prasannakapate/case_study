@@ -1,4 +1,4 @@
-import { createSlice, current } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {};
 
@@ -7,7 +7,6 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     saveUser: (state, action) => {
-      console.log(current(state));
       return {
         ...state,
         ...action.payload,

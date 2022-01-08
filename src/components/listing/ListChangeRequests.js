@@ -1,4 +1,5 @@
 import {
+  IconButton,
   Table,
   TableBody,
   TableCell,
@@ -7,7 +8,11 @@ import {
   TableRow,
 } from '@mui/material';
 
-export default function changeRequestsList({ changeRequests }) {
+import CancelIcon from '@mui/icons-material/Cancel';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import { flexbox } from '@mui/system';
+
+export default function ListChangeRequests({ changeRequests }) {
   function renderChangeRequests(request) {
     return (
       <TableRow
@@ -21,6 +26,16 @@ export default function changeRequestsList({ changeRequests }) {
         <TableCell>{request.request_type}</TableCell>
         <TableCell>{request.status}</TableCell>
         <TableCell>{request.date_submitted}</TableCell>
+        {request.isNew && (
+          <TableCell>
+            <IconButton aria-label="approve" color="success">
+              <CheckCircleIcon />
+            </IconButton>
+            <IconButton aria-label="reject" color="error">
+              <CancelIcon />
+            </IconButton>
+          </TableCell>
+        )}
       </TableRow>
     );
   }
@@ -30,7 +45,7 @@ export default function changeRequestsList({ changeRequests }) {
       <Table
         sx={{ minWidth: 650, border: '1px' }}
         size="small"
-        aria-label="simple table"
+        aria-label="listing table"
       >
         <TableHead sx={{ background: 'lightgrey' }}>
           <TableRow>
@@ -41,11 +56,17 @@ export default function changeRequestsList({ changeRequests }) {
             <TableCell>Request Type</TableCell>
             <TableCell>Status</TableCell>
             <TableCell>Date Submitted</TableCell>
+            <TableCell />
           </TableRow>
         </TableHead>
         <TableBody>
-          {changeRequests.length > 0 &&
-            changeRequests?.map(renderChangeRequests)}
+          {changeRequests.length > 0 ? (
+            changeRequests?.map(renderChangeRequests)
+          ) : (
+            <TableCell align="center" colSpan={8}>
+              <p>Sorry, no matching records found</p>
+            </TableCell>
+          )}
         </TableBody>
       </Table>
     </TableContainer>
