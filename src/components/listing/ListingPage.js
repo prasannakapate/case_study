@@ -1,3 +1,4 @@
+import { API, REQUEST_STATUS } from '../../config/constants';
 import {
   Button,
   Container,
@@ -8,11 +9,11 @@ import {
 } from '@mui/material';
 import { useEffect, useState } from 'react';
 
-import { API } from '../../config/constants';
 import AddNewChangeRequest from '../addNewChangeRequest/AddNewChangeRequest';
 import BackDrop from '../common/BackDrop';
 import Box from '@mui/material/Box';
 import BoxItem from '../common/BoxItem';
+import ConfirmationDialog from '../common/ConfirmationDialog';
 import Header from '../common/Header';
 import ListChangeRequests from './ListChangeRequests';
 import { getData } from '../../services/fetchApi';
@@ -26,6 +27,20 @@ export default function ListingPage() {
   const [filteredData, setFilteredData] = useState(data);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState();
+  const [openConfirmation, setOpenConfirmation] = useState(false);
+  const [selectedChangeRequest, setSelectedChangeRequest] = useState(null);
+
+  const handleConfirmClick = () => {
+    const { status } = selectedChangeRequest;
+    if (status === REQUEST_STATUS.APPROVE) {
+      console.log('approve this request');
+      //TODO change request status
+    } else if (status === REQUEST_STATUS.REJECT) {
+      console.log('approve this request');
+      //TODO change request status
+    }
+    setOpenConfirmation(false);
+  };
 
   useEffect(() => {
     setLoading(true);
@@ -122,9 +137,21 @@ export default function ListingPage() {
         </Box>
       </div>
 
-      <ListChangeRequests changeRequests={filteredData} />
+      <ListChangeRequests
+        changeRequests={filteredData}
+        setOpenConfirmation={setOpenConfirmation}
+        setSelectedChangeRequest={setSelectedChangeRequest}
+      />
 
       {loading && <BackDrop />}
+      {openConfirmation && (
+        <ConfirmationDialog
+          openConfirmation={openConfirmation}
+          setOpenConfirmation={setOpenConfirmation}
+          handleConfirmClick={handleConfirmClick}
+          selectedChangeRequest={selectedChangeRequest}
+        />
+      )}
     </Container>
   );
 }

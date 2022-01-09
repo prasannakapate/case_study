@@ -11,7 +11,16 @@ import {
 import CancelIcon from '@mui/icons-material/Cancel';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
-export default function ListChangeRequests({ changeRequests }) {
+export default function ListChangeRequests({
+  changeRequests,
+  setOpenConfirmation,
+  setSelectedChangeRequest,
+}) {
+  const handleConfirmation = (status, requestId) => {
+    setOpenConfirmation(true);
+    setSelectedChangeRequest({ status, requestId });
+  };
+
   function renderChangeRequests(request) {
     return (
       <TableRow
@@ -27,10 +36,18 @@ export default function ListChangeRequests({ changeRequests }) {
         <TableCell>{request.date_submitted}</TableCell>
         {request.isNew && (
           <TableCell>
-            <IconButton aria-label="approve" color="success">
+            <IconButton
+              aria-label="approve"
+              color="success"
+              onClick={() => handleConfirmation('approve', request.request_id)}
+            >
               <CheckCircleIcon />
             </IconButton>
-            <IconButton aria-label="reject" color="error">
+            <IconButton
+              aria-label="reject"
+              color="error"
+              onClick={() => handleConfirmation('reject', request.request_id)}
+            >
               <CancelIcon />
             </IconButton>
           </TableCell>
@@ -62,9 +79,11 @@ export default function ListChangeRequests({ changeRequests }) {
           {changeRequests.length > 0 ? (
             changeRequests?.map(renderChangeRequests)
           ) : (
-            <TableCell align="center" colSpan={8}>
-              <p>Sorry, no matching records found</p>
-            </TableCell>
+            <TableRow>
+              <TableCell align="center" colSpan={8}>
+                <p>Sorry, no matching records found</p>
+              </TableCell>
+            </TableRow>
           )}
         </TableBody>
       </Table>

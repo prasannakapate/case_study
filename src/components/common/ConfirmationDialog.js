@@ -6,50 +6,54 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import Draggable from 'react-draggable';
-import Paper from '@mui/material/Paper';
 
-function PaperComponent(props) {
-  return (
-    <Draggable
-      handle="#draggable-dialog-title"
-      cancel={'[class*="MuiDialogContent-root"]'}
-    >
-      <Paper {...props} />
-    </Draggable>
-  );
-}
-
-export default function ConfirmationBox() {
-  const [open, setOpen] = React.useState(false);
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
+export default function ConfirmationBox({
+  openConfirmation,
+  setOpenConfirmation,
+  handleConfirmClick,
+  selectedChangeRequest,
+}) {
   const handleClose = () => {
-    setOpen(false);
+    setOpenConfirmation(false);
+    handleConfirmClick(false);
   };
 
   return (
     <div>
       <Dialog
-        open={open}
+        open={openConfirmation}
         onClose={handleClose}
-        PaperComponent={PaperComponent}
         aria-labelledby="draggable-dialog-title"
       >
         <DialogTitle style={{ cursor: 'move' }} id="draggable-dialog-title">
           Are you sure?
         </DialogTitle>
         <DialogContent>
-          <DialogContentText>Do you really want to do this?</DialogContentText>
+          <DialogContentText>
+            <span>
+              <strong>Selected Request ID:</strong>
+              {selectedChangeRequest.requestId}
+            </span>
+            <br />
+            Do you really want to {selectedChangeRequest.status} this request?
+          </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button autoFocus onClick={handleClose}>
+          <Button
+            autoFocus
+            onClick={() => setOpenConfirmation()}
+            size="small"
+            variant="outlined"
+          >
             Cancel
           </Button>
-          <Button onClick={handleClose}>Confirm</Button>
+          <Button
+            onClick={() => handleConfirmClick(true)}
+            size="small"
+            variant="contained"
+          >
+            Confirm
+          </Button>
         </DialogActions>
       </Dialog>
     </div>

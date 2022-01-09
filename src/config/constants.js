@@ -4,3 +4,9 @@ export const API = {
   FETCH_CR_TYPE: 'https://mocki.io/v1/1f5d39fc-ced0-4023-9528-005599329ec9',
   SUBMIT_CR: 'https://mocki.io/v1/bee7c3c2-a900-42c4-b746-fe81096bcc32',
 };
+
+export const REQUEST_STATUS = {
+  APPROVE: 'approve',
+  REJECT: 'reject',
+  NOT_STARTED: 'not started',
+};
