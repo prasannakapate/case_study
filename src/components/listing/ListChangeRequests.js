@@ -10,7 +10,6 @@ import {
 
 import CancelIcon from '@mui/icons-material/Cancel';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import { flexbox } from '@mui/system';
 
 export default function ListChangeRequests({ changeRequests }) {
   function renderChangeRequests(request) {

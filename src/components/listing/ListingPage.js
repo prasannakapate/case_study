@@ -17,6 +17,8 @@ import Header from '../common/Header';
 import ListChangeRequests from './ListChangeRequests';
 import { getData } from '../../services/fetchApi';
 
+const boxStyle = { display: 'flex', p: 0, m: 0 };
+
 export default function ListingPage() {
   const [requestId, setRequestId] = useState('');
   const [owner, setOwner] = useState('');
@@ -29,8 +31,8 @@ export default function ListingPage() {
     setLoading(true);
     getData(API.FETCH_CHANGE_REQUESTS)
       .then((data) => {
-        if (data && data.change_request.length > 0) {
-          let newData = data?.change_request.sort(
+        if (data?.change_request?.length > 0) {
+          let newData = data.change_request.sort(
             (a, b) => new Date(a.date_submitted) - new Date(b.date_submitted)
           );
           setData(newData);
@@ -65,14 +67,14 @@ export default function ListingPage() {
       <CssBaseline />
       <Header />
       <div>
-        <Box sx={{ display: 'flex', p: 0, m: 0 }}>
+        <Box sx={boxStyle}>
           <BoxItem>
             <Typography variant="h6" gutterBottom component="div">
               Change Requests
             </Typography>
           </BoxItem>
         </Box>
-        <Box sx={{ display: 'flex', p: 0, m: 0 }}>
+        <Box sx={boxStyle}>
           <BoxItem>
             <InputLabel id="request-id">Request ID</InputLabel>
             <TextField
